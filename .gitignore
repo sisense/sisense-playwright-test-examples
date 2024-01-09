@@ -1,0 +1,12 @@
+/.idea/
+/.vscode/
+/dist
+/docs
+node_modules/
+/reports
+/test-data/
+/test-results/
+/playwright/.cache/
+/playwright-report/
+*.DS_Store
+/blob-report/

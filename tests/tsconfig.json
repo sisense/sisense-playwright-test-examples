@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../",
+    "paths": {
+      "@controllers/*": ["src/api/controllers/*"],
+      "@models/*": ["src/api/models/*"],
+      "@config/*": ["src/config/*"],
+      "@constants/*": ["src/constants/*"],
+      "@fixtures/*": ["src/fixtures/*"],
+      "@pages/*": ["src/pages/*"],
+      "@steps/*": ["src/steps/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}
