@@ -15,6 +15,10 @@ const allProjects: any[] = [
     name: 'ui',
     testDir: 'tests/ui',
   },
+  {
+    name: 'example',
+    testDir: 'tests',
+  },
 ];
 
 /**

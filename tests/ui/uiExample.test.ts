@@ -20,7 +20,7 @@ test.describe('Login via API and open dashboard', () => {
         await DatamodelAPISteps.deleteDatamodelByTitle(dataModelName, userContext);
     });
 
-    test('UI test example with login via API @parallel', async ({
+    test('UI test example with login via API @parallel @example', async ({
         userContext,
         page,
         dashboardPageSteps,

@@ -51,7 +51,7 @@ export const envConfig: EnvProperties = {
     hostIP: process.env.HOST_IP || '',
     clientPort: parseInt(process.env.HOST_PORT!) || 30845,
     isWindows: process.env.OS_TYPE == 'Windows',
-    isSSL: process.env.IS_SSL == 'false',
+    isSSL: process.env.IS_SSL == 'true',
     getClientUrl(): string {
         return this.isSSL ? `https://${this.host}` : `http://${this.host}:${this.clientPort}`;
     },
