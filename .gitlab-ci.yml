@@ -11,7 +11,7 @@ release:
   stage: publish
   script:
     # - git status
-    - git config --global --add safe.directory $pwd
+    - git config --global --add safe.directory /builds/SisenseTeam/Product/FE/sisense-playwright-ts-tests-examples
     - git remote add github https://github.com/sisense/sisense-playwright-test-examples.git
     - git push github
 #    - git push https://github.com/sisense/sisense-playwright-test-examples.git
