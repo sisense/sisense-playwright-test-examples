@@ -14,8 +14,7 @@ release:
     GIT_AUTHOR_EMAIL: 'release-bot@sisense.com'
   script:
     # - git status
-    - pwd
-    - ls -lart
+    - git config --global --add safe.directory $pwd
     - git remote add github https://github.com/sisense/sisense-playwright-test-examples.git
     - git push github
 #    - git push https://github.com/sisense/sisense-playwright-test-examples.git
