@@ -14,7 +14,7 @@ release:
     - git config --global --add safe.directory /builds/SisenseTeam/Product/FE/sisense-playwright-ts-tests-examples
     - git remote add github https://seleznovoleksii:${GITHUB_TOKEN}@github.com/sisense/sisense-playwright-test-examples.git
     # - git remote add github https://github.com/sisense/sisense-playwright-test-examples.git
-    - git push github HEAD:main
+    - git push github HEAD:refs/heads/main
 #    - git push https://github.com/sisense/sisense-playwright-test-examples.git
   only:
     - develop
