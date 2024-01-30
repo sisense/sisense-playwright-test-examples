@@ -16,8 +16,8 @@ release:
     # - git status
     - pwd
     - ls -lart
-    - rm -rf .git
-    - git push https://github.com/sisense/sisense-playwright-test-examples.git --force
+    - git remote add github https://github.com/sisense/sisense-playwright-test-examples.git
+    - git push github
 #    - git push https://github.com/sisense/sisense-playwright-test-examples.git
   only:
     - develop
