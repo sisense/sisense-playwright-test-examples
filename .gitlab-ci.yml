@@ -7,6 +7,7 @@ stages:
   - publish
 
 release:
+  when: manual
   stage: publish
   variables:
     GIT_AUTHOR_NAME: 'release-bot'
