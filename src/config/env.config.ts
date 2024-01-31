@@ -67,7 +67,7 @@ export const envConfig: EnvProperties = {
         return process.env.SISENSE_VERSION || this.releaseBranch;
     },
     testBranch: process.env.TEST_BRANCH || 'develop',
-    artifactoryUrl: 'https://artifactory.sisense.com',
+    artifactoryUrl: process.env.ARTIFACTORY_URL || '',
     artifactoryUserName: '',
     artifactoryPassword: '',
     getArtifactoryRepository(): string {
