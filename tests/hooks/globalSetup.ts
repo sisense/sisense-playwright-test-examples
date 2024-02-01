@@ -18,22 +18,23 @@ async function globalSetup() {
     createDirectoryRecursively(envConfig.localDownloadsDirectory);
     createDirectoryRecursively(envConfig.localConfigDirectory);
     createDirectoryRecursively(envConfig.localLogsDirectory);
-    await downloadFileFromArtifactory(
-        envConfig.dbCredentialsFileName,
-        envConfig.crossReleaseBranch,
-        envConfig.localConfigDirectory,
-    );
-    await downloadFileFromArtifactory(
-        envConfig.ssoCredentialsFileName,
-        envConfig.releaseBranch,
-        envConfig.localConfigDirectory,
-    );
-    await downloadFileFromArtifactory(
-        envConfig.hostCertFileName,
-        envConfig.crossReleaseBranch,
-        envConfig.localConfigDirectory,
-    );
-
+    if (envConfig.artifactoryUrl) {
+        await downloadFileFromArtifactory(
+            envConfig.dbCredentialsFileName,
+            envConfig.crossReleaseBranch,
+            envConfig.localConfigDirectory,
+        );
+        await downloadFileFromArtifactory(
+            envConfig.ssoCredentialsFileName,
+            envConfig.releaseBranch,
+            envConfig.localConfigDirectory,
+        );
+        await downloadFileFromArtifactory(
+            envConfig.hostCertFileName,
+            envConfig.crossReleaseBranch,
+            envConfig.localConfigDirectory,
+        );
+    }
     changeFilePermission(
         `${envConfig.localConfigDirectory}/${envConfig.hostCertFileName}`,
         '00400',

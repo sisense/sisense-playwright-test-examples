@@ -11,7 +11,9 @@ export const getFilePassInArtifactsFolder = (filename: string) => {
 };
 
 export const changeFilePermission = (filePath: string, permission: string) => {
-    fs.chmodSync(filePath, permission);
+    if (fs.existsSync(filePath)) {
+        fs.chmodSync(filePath, permission);
+    }
 };
 
 /**
