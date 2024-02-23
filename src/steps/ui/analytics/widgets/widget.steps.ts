@@ -24,4 +24,13 @@ export class WidgetSteps extends BrowserSteps {
                 await this.widget.clickWidgetToolbarMenuButton(widgetTitle);
             });
     };
+
+    /**
+     * Verifies loading dots of all widgets on dashboard are not visible
+     */
+    verifyAllWidgetsLoaded = async (): Promise<void> => {
+        await test.step(`Verify all widgets loading is finished`, async () => {
+            await this.widget.waitLoadersHidden();
+        });
+    };
 }

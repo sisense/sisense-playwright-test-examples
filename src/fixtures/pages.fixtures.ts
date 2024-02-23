@@ -4,6 +4,11 @@ import { BrowserSteps } from '@steps/ui/browser.steps';
 import { DashboardPageSteps } from '@steps/ui/analytics/dashboard/dashboardPage.steps';
 import { WidgetSteps } from '@steps/ui/analytics/widgets/widget.steps';
 import { MenuPopupSteps } from '@steps/ui/analytics/menuPopup.steps';
+import { AddToPulsePopupSteps } from '@steps/ui/analytics/widgets/addToPulsePopup.steps';
+import { AnalyticsNavverSteps } from '@steps/ui/analytics/analyticsNavver.steps';
+import { HeaderPageSteps } from '@steps/ui/headerPage.steps';
+import { NewWidgetPopupSteps } from '@steps/ui/analytics/widgets/newWidgetPopupSteps/newWidgetPopup.steps';
+import { AnalyticsDimensionsPopupSteps } from '@steps/ui/analytics/analyticsDimensionsPopup.steps';
 
 export type PagesContextFixture = {
     contextPage: Page;
@@ -15,6 +20,11 @@ export type PagesFixture = {
     dashboardPageSteps: DashboardPageSteps;
     widgetSteps: WidgetSteps;
     menuPopupSteps: MenuPopupSteps;
+    addToPulsePopupSteps: AddToPulsePopupSteps;
+    analyticsNavverSteps: AnalyticsNavverSteps;
+    headerPageSteps: HeaderPageSteps;
+    newWidgetPopupSteps: NewWidgetPopupSteps;
+    analyticsDimensionsPopupSteps: AnalyticsDimensionsPopupSteps;
 };
 
 export const pagesContextFixture: Fixtures<PagesContextFixture & PlaywrightTestArgs> = {
@@ -38,5 +48,20 @@ export const pagesFixture: Fixtures<PagesFixture & PagesContextFixture> = {
     },
     menuPopupSteps: async ({ contextPage }, use) => {
         await use(new MenuPopupSteps(contextPage));
+    },
+    addToPulsePopupSteps: async ({ contextPage }, use) => {
+        await use(new AddToPulsePopupSteps(contextPage));
+    },
+    analyticsNavverSteps: async ({ contextPage }, use) => {
+        await use(new AnalyticsNavverSteps(contextPage));
+    },
+    headerPageSteps: async ({ contextPage }, use) => {
+        await use(new HeaderPageSteps(contextPage));
+    },
+    newWidgetPopupSteps: async ({ contextPage }, use) => {
+        await use(new NewWidgetPopupSteps(contextPage));
+    },
+    analyticsDimensionsPopupSteps: async ({ contextPage }, use) => {
+        await use(new AnalyticsDimensionsPopupSteps(contextPage));
     },
 };

@@ -10,6 +10,10 @@ export class DashboardsV1 {
     private static readonly DASHBOARDS = API.V1_0 + '/dashboards';
     private static readonly DASHBOARDS_SEARCHES = this.DASHBOARDS + '/searches';
     private static readonly DASHBOARDS_IMPORT_BULK = this.DASHBOARDS + '/import/bulk';
+    private static readonly DASHBOARDS_ADMIN = this.DASHBOARDS + '/admin';
+    private static readonly DASHBOARDS_ADMIN_BY_NAME = this.DASHBOARDS_ADMIN + '?name=';
+    private static readonly DASHBOARDS_BULK_ADMIN_ACCESS =
+        this.DASHBOARDS + '/bulk?adminAccess=true&dashboardIds=';
 
     static async postDashboardsSearches(
         dashboardSearchQuickFilter: DashboardSearchQuickFilter,
@@ -32,5 +36,21 @@ export class DashboardsV1 {
     ): Promise<APIResponse> {
         const apiContext: APIRequestContext = await getAuthorizedContext(userContext);
         return apiContext.post(this.DASHBOARDS_IMPORT_BULK, { data: dashboards, params });
+    }
+
+    static async getDashboardsAdminByName(
+        userContext: UserContext,
+        dashboardTitle: string,
+    ): Promise<APIResponse> {
+        const apiContext: APIRequestContext = await getAuthorizedContext(userContext);
+        return apiContext.get(`${this.DASHBOARDS_ADMIN_BY_NAME}${dashboardTitle}`);
+    }
+
+    static async deleteDashboardsBulk(
+        dashboardIds: string[],
+        userContext: UserContext,
+    ): Promise<APIResponse> {
+        const apiContext: APIRequestContext = await getAuthorizedContext(userContext);
+        return apiContext.delete(`${this.DASHBOARDS_BULK_ADMIN_ACCESS}${dashboardIds}`);
     }
 }

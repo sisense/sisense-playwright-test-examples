@@ -8,18 +8,21 @@ export class UserContext {
     password: string;
     baseUrl: string;
     token?: string;
+    userName?: string;
 
     constructor(
         email: string,
         roleName: RoleDisplayName,
         tenantName: string = envConfig.systemTenant,
         password: string = envConfig.defaultPassword,
+        userName: string = email,
     ) {
         this.email = email;
         this.roleName = roleName;
         this.tenantName = tenantName;
         this.password = password;
         this.baseUrl = getBaseUrl(this);
+        this.userName = userName;
         console.log('Created user context:', this);
     }
 }

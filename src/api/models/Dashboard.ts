@@ -1,7 +1,7 @@
 import { Widget } from '@models/Widget';
 import { Datasource } from '@models/Datasource';
-import { Share } from '@models/Share';
-import { DashboardSharesSubscription } from '@models/DashboardSharesSubscription';
+import { DashboardSharesSubscription } from './DashboardSharesSubscription';
+import { DashboardPermission } from '@models/DashboardPermission';
 
 export interface Dashboard {
     oid?: string;
@@ -14,9 +14,10 @@ export interface Dashboard {
     style?: {};
     datasource: Datasource;
     widgets: Widget[];
-    shares?: Share[];
+    shares?: DashboardPermission[];
     subscription?: DashboardSharesSubscription;
     previewLayout?: PreviewLayout[];
+    allowChangeSubscription?: boolean;
 }
 
 export interface PreviewLayout {

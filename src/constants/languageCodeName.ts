@@ -1,0 +1,16 @@
+export enum LanguageCodeName {
+    SYSTEM_LANGUAGE = '',
+    CHINESE = 'zh-CN',
+    DUTCH = 'nl-NL',
+    ENGLISH = 'en-US',
+    FRENCH = 'fr-FR',
+    GERMAN = 'de-DE',
+    ITALIAN = 'it-IT',
+    JAPANESE = 'ja-JP',
+    KOREAN = 'ko-KR',
+    PORTUGUESE = 'pt-BR',
+    RUSSIAN = 'ru-RU',
+    SPANISH_ARGENTINA = 'es-AR',
+    SPANISH_SPAIN = 'es-ES',
+    TURKISH = 'tr-TR',
+}
