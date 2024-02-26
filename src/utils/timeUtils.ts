@@ -9,3 +9,15 @@ export function getCurrentDate(): string {
 
     return `${year}-${month}-${day}`;
 }
+
+/**
+ * Sleeps test execution on 'seconds' time
+ * Do not use it for wait of UI elements
+ * @param seconds   - amount in seconds to sleep
+ * @param reason    - add reason for sleep trigger (will be added to console output)
+ */
+export async function sleep(seconds: number, reason?: string): Promise<void> {
+    console.log(`Waiting '${seconds}' seconds... ${reason}`);
+    await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+    console.log(`Waiting done.`);
+}

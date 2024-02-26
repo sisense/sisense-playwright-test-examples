@@ -1,4 +1,4 @@
-import test, { Page } from '@playwright/test';
+import test, { expect, Page } from '@playwright/test';
 import { BrowserSteps } from '@steps/ui/browser.steps';
 import { UserContext } from '@config/UserContext';
 import { Dashboard } from '@models/Dashboard';
@@ -48,6 +48,17 @@ export class DashboardPageSteps extends BrowserSteps {
             await this.dashboardPage.waitDashboardTitleToBe(dashboardTitle);
             await this.widget.waitLoadersHidden();
             await this.widget.waitWidgetsLoaded();
+        });
+    };
+
+    /**
+     * Verifies dashboard title matches the expected one
+     * @param expectedTitle - expected dashboard title
+     */
+    verifyDashboardTitleIs = async (expectedTitle: string): Promise<void> => {
+        await test.step(`Verify dashboard title is '${expectedTitle}' on 'Dashboard' page`, async (): Promise<void> => {
+            const dashboardTitle: string = await this.dashboardPage.getDashboardTitle();
+            expect(dashboardTitle).toEqual(expectedTitle);
         });
     };
 }

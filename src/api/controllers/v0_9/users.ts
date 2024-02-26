@@ -2,6 +2,7 @@ import { getAuthorizedContext } from '@controllers/restClient';
 import { ApiVersion as API } from '@constants/restApiVersion';
 import { UserContext } from '@config/UserContext';
 import { User } from '@models/User';
+import { APIRequestContext, APIResponse } from '@playwright/test';
 
 export class UsersV09 {
     private static readonly USERS = API.V0_9 + '/users';
@@ -33,5 +34,13 @@ export class UsersV09 {
             data: users,
             params: params,
         });
+    }
+
+    static async getUsersLoggedin(
+        userContext: UserContext,
+        apiContext?: APIRequestContext | undefined,
+    ) {
+        apiContext = apiContext ?? (await getAuthorizedContext(userContext));
+        return apiContext.get(userContext.baseUrl + this.USERS_LOGGEDIN);
     }
 }

@@ -9,6 +9,8 @@ import { envConfig } from '@config/env.config';
 import { RolesAPISteps } from '@steps/api/admin/roles.api.steps';
 import { LanguageCodeName } from '@constants/languageCodeName';
 import { TenantsAPISteps } from '@steps/api/admin/tenants.api.steps';
+import { AuthV09 } from '@controllers/v0_9/auth';
+import { UiSettings } from '@models/UiSettings';
 
 export class UsersAPISteps {
 
@@ -112,6 +114,114 @@ export class UsersAPISteps {
             );
             await this.addUsers([newUser], userContext, params);
             return context;
+        });
+    }
+
+    /**
+     * Verifies the system contains provided users
+     * @param emails - emails of users that should be present in the system
+     * @param userContext - user that makes the API call
+     */
+    static async verifyUsersArePresent(emails: string[], userContext: UserContext): Promise<void> {
+        await test.step(`Verify '${emails.join(', ')}' users are present by '${userContext?.email
+            }' via API`, async () => {
+                const allUsers: string[] = await this.getAllUserEmails(userContext);
+                expect(allUsers).toEqual(expect.arrayContaining(emails));
+            });
+    }
+
+    /**
+     * Verified provided
+     * @param emails - emails of users that should not be present in the system
+     * @param userContext - user that makes the API call
+     */
+    static async verifyUsersAreNotPresent(
+        emails: string[],
+        userContext: UserContext,
+    ): Promise<void> {
+        await test.step(`Verify '${emails.join(', ')}' users are not present by '${userContext?.email
+            }' via API`, async () => {
+                const allUsers: string[] = await this.getAllUserEmails(userContext);
+                expect(allUsers).not.toEqual(expect.arrayContaining(emails));
+            });
+    }
+
+    /**
+     * Verifies current user is logged in UI via API
+     * @param page - opened page in UI
+     * @param userContext - user that is used to take Email and proper BaseURL
+     */
+    static async verifyLoggedinUserEmailIs(userContext: UserContext, page: Page): Promise<void> {
+        await test.step(`Verify '${userContext.email}' user is logged in via API`, async () => {
+            const res = await UsersV09.getUsersLoggedin(userContext, page.request);
+            expect(res.status()).toBe(200);
+            const user: User = await res.json();
+            expect(user.email).toBe(userContext.email);
+        });
+    }
+
+    /**
+     * Logout user from the browser via API
+     * @param page - opened page in UI
+     * @param userContext - user that makes the API call
+     */
+    static async userLogOut(page: Page, userContext: UserContext): Promise<void> {
+        await test.step(`User '${userContext.email}' logout via API`, async () => {
+            const res = await AuthV09.getLogout(page.request, userContext);
+            expect(res.status()).toBe(200);
+        });
+    }
+
+    /**
+     * Updates GotIt for the user so UI guiders don't appear
+     * @param userContext - user that makes the API call
+     */
+    static async setGotItForUser(userContext: UserContext): Promise<void> {
+        await test.step(`GotIt update for '${userContext.email}' user via API`, async () => {
+            const uiSettings: UiSettings = {
+                ecmNext: {
+                    dataPage: {
+                        hideEcmHint: true,
+                        hideListViewGuider: true,
+                    },
+                    guidersShown: {
+                        ecActions: true,
+                        addData: true,
+                        analytics: true,
+                        dashboards: true,
+                    },
+                },
+            };
+            const res = await UsersV1.patchUiSettings(userContext, uiSettings);
+            expect(res.status()).toBe(200);
+            console.log(`GotIt is updated for '${userContext.email}' user`);
+        });
+    }
+
+    /**
+     * Gets all users' emails
+     * @param userContext - user that makes the API call
+     * @returns array of users' [emails]{@link User.email}
+     */
+    private static async getAllUserEmails(userContext: UserContext): Promise<string[]> {
+        return test.step(`Get all user emails by '${userContext.email}' via API`, async () => {
+            const json: User[] = await this.getAllUsers(userContext);
+            const emails: string[] = json.map(({ email }) => email || '');
+            console.log('Users found: ' + emails.join(', '));
+            return emails;
+        });
+    }
+
+    /**
+     * Gets all users
+     * @param userContext - user that makes the API call
+     * @returns body response in json
+     */
+    private static async getAllUsers(userContext: UserContext): Promise<User[]> {
+        return test.step(`Get all users by '${userContext.email}' via API`, async () => {
+            const response = await UsersV1.getUsers(userContext);
+            expect(response.status()).toBe(200);
+            return response.json();
         });
     }
 

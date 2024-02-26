@@ -94,4 +94,14 @@ export class BrowserSteps {
             await this.basePage.openByPartURL(urlSuffix, userContext, waitPageIsLoaded);
         });
     };
+
+    /**
+     * Opens BaseURL page via URL on the current page and waits it's loaded
+     * @param userContext - user to get correct BaseURL
+     */
+    openBasePageURL = async (userContext: UserContext): Promise<void> => {
+        await test.step(`Open base page '${userContext.baseUrl}'`, async () => {
+            await this.basePage.openBaseURL(userContext);
+        });
+    };
 }

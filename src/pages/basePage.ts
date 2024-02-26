@@ -1,6 +1,8 @@
 import { Cookie, expect, Locator, Page, Request, Response } from '@playwright/test';
 import { UserContext } from '@config/UserContext';
 import console from 'console';
+import { downloadFileFromArtifactory } from '@utils/artifactoryUtils';
+import { getFilePassInArtifactsFolder } from '@utils/fileUtils';
 
 export let resourceResponses: Response[] = [];
 export let browserConsoleErrors: string[] = [];
@@ -124,5 +126,18 @@ export class BasePage {
             enabled,
             timeout: timeoutSec ? timeoutSec * 1000 : undefined,
         });
+    }
+
+    /**
+     * Downloads the file from the Artifactory and uploads it into the default input locator input[type='file']
+     * Custom input locator can be defined as second (optional) parameter if the default input locator isn't match your case
+     * @param fileName  - name of the file to upload
+     * @param locator   - (optional) your custom locator if needed
+     */
+    async uploadFile(fileName: string, locator?: Locator): Promise<void> {
+        locator = locator || this.inputTypeFile;
+        await downloadFileFromArtifactory(fileName);
+        const filePath: string = getFilePassInArtifactsFolder(fileName);
+        await locator.setInputFiles(filePath, { timeout: 2 * 60 * 1000 });
     }
 }

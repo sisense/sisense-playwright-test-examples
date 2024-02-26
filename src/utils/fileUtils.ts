@@ -10,6 +10,10 @@ export const getFilePassInArtifactsFolder = (filename: string) => {
     return path.join(envConfig.localArtifactsDirectory, filename);
 };
 
+export const getFilePassInDownloadsFolder = (filename: string) => {
+    return path.join(envConfig.localDownloadsDirectory, filename);
+};
+
 export const changeFilePermission = (filePath: string, permission: string) => {
     if (fs.existsSync(filePath)) {
         fs.chmodSync(filePath, permission);

@@ -9,6 +9,11 @@ import { AnalyticsNavverSteps } from '@steps/ui/analytics/analyticsNavver.steps'
 import { HeaderPageSteps } from '@steps/ui/headerPage.steps';
 import { NewWidgetPopupSteps } from '@steps/ui/analytics/widgets/newWidgetPopupSteps/newWidgetPopup.steps';
 import { AnalyticsDimensionsPopupSteps } from '@steps/ui/analytics/analyticsDimensionsPopup.steps';
+import { AdminPageSteps } from '@steps/ui/admin/adminPage.steps';
+import { AnalyticsPageSteps } from '@steps/ui/analytics/analyticsPage.steps';
+import { DataPageSteps } from '@steps/ui/data/dataPage.steps';
+import { DataSourcePageSteps } from '@steps/ui/data/dataSourcePage/dataSourcePage.steps';
+import { AddDataPopupSteps } from '@steps/ui/data/addDataPopup.steps';
 
 export type PagesContextFixture = {
     contextPage: Page;
@@ -25,6 +30,11 @@ export type PagesFixture = {
     headerPageSteps: HeaderPageSteps;
     newWidgetPopupSteps: NewWidgetPopupSteps;
     analyticsDimensionsPopupSteps: AnalyticsDimensionsPopupSteps;
+    adminPageSteps: AdminPageSteps;
+    analyticsPageSteps: AnalyticsPageSteps;
+    dataPageSteps: DataPageSteps;
+    dataSourcePageSteps: DataSourcePageSteps;
+    addDataPopupSteps: AddDataPopupSteps;
 };
 
 export const pagesContextFixture: Fixtures<PagesContextFixture & PlaywrightTestArgs> = {
@@ -63,5 +73,20 @@ export const pagesFixture: Fixtures<PagesFixture & PagesContextFixture> = {
     },
     analyticsDimensionsPopupSteps: async ({ contextPage }, use) => {
         await use(new AnalyticsDimensionsPopupSteps(contextPage));
+    },
+    adminPageSteps: async ({ contextPage }, use) => {
+        await use(new AdminPageSteps(contextPage));
+    },
+    analyticsPageSteps: async ({ contextPage }, use) => {
+        await use(new AnalyticsPageSteps(contextPage));
+    },
+    dataPageSteps: async ({ contextPage }, use) => {
+        await use(new DataPageSteps(contextPage));
+    },
+    dataSourcePageSteps: async ({ contextPage }, use) => {
+        await use(new DataSourcePageSteps(contextPage));
+    },
+    addDataPopupSteps: async ({ contextPage }, use) => {
+        await use(new AddDataPopupSteps(contextPage));
     },
 };
