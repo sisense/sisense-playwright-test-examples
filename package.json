@@ -11,7 +11,7 @@
   "author": "sisense",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.39.0",
+    "@playwright/test": "^1.41.2",
     "@types/node": "^20.10.6",
     "@types/uuid": "^9.0.1",
     "uuid": "^9.0.0"

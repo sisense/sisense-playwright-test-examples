@@ -9,7 +9,7 @@ export class AnalyticsDimensionsPopupSteps extends BrowserSteps {
     }
 
     /**
-     * Adds column from table with default or specific aggregation type
+     * Adds column from table with default or specific aggregation type.
      * use [aggregationType] param is not default aggregation is needed (ALL ITEMS, AVERAGE, MEDIAN etc.)
      * @param column            - data model column name
      * @param table             - data model table name
