@@ -4,6 +4,7 @@ import { UsersAPISteps } from '@steps/api/admin/users.api.steps';
 import { CliAPISteps } from '@steps/api/cli/cliAPISteps';
 import { UserContext } from '@config/UserContext';
 import { PodName } from '@constants/podName';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 test.describe('X-RAY-00006: Restart pods', () => {
     let admin: UserContext;
@@ -11,9 +12,9 @@ test.describe('X-RAY-00006: Restart pods', () => {
     test.beforeEach(async ({ userContext }) => {
         admin = await UsersAPISteps.addUser(
             {
-                email: 'admin00006@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.ADMIN,
-                password: 'Bh$963zs',
+                password: generateUserPassword(),
             },
             userContext,
         );

@@ -11,9 +11,10 @@
   "author": "sisense",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^20.10.6",
     "@types/uuid": "^9.0.1",
+    "generate-password-ts": "^1.6.5",
     "uuid": "^9.0.0"
   }
 }

@@ -6,6 +6,7 @@ import { PermissionType } from '@constants/permissionType';
 import { DashboardPermissionRule } from '@constants/dashboardPermissionRule';
 import { UserContext } from '@config/UserContext';
 import { DashboardSearchFilterType } from '@constants/dashboardSearchFilterType';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 test.describe('X-RAY-00023: Add dashboards and share via API', () => {
     const dashboardOne = 'dashboard-one-X-RAY-00023';
@@ -16,9 +17,9 @@ test.describe('X-RAY-00023: Add dashboards and share via API', () => {
     test.beforeEach(async ({ userContext }) => {
         adminUser = await UsersAPISteps.addUser(
             {
-                email: 'admin-X-RAY-00023@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.ADMIN,
-                password: 'Nj#859la',
+                password: generateUserPassword(),
             },
             userContext,
         );

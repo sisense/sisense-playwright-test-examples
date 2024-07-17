@@ -10,6 +10,7 @@ import { UsersAPISteps } from '@steps/api/admin/users.api.steps';
 import { RoleDisplayName as ROLE_NAME } from '@constants/roleDisplayName';
 import { ElementState } from '@constants/elementState';
 import { WidgetType } from '@constants/widgetType';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 test.describe('X-RAY-00022: Add pulse notifications', () => {
     let adminContext: UserContext;
@@ -20,9 +21,9 @@ test.describe('X-RAY-00022: Add pulse notifications', () => {
     test.beforeEach(async ({ userContext }) => {
         adminContext = await UsersAPISteps.addUser(
             {
-                email: 'admin-X-RAY-00022@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.ADMIN,
-                password: 'Mh@960ks',
+                password: generateUserPassword(),
             },
             userContext,
         );

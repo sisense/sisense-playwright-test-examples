@@ -6,6 +6,7 @@ import { DbType } from '@constants/dbType';
 import { ElementState } from '@constants/elementState';
 import { UserContext } from '@config/UserContext';
 import { BuildType } from '@constants/buildType';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 // Test will fail as src/config/db.config.ts file does not contains real db credentials
 // Please fill in src/config/db.config.ts file with db connection information
@@ -19,9 +20,9 @@ test.describe('X-RAY-00021: Create a cube with db connector', () => {
     test.beforeEach(async ({ userContext }) => {
         dataAdmin = await UsersAPISteps.addUser(
             {
-                email: 'dataAdmin00021@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.DATA_ADMIN,
-                password: 'Bh$963zs',
+                password: generateUserPassword(),
             },
             userContext,
         );

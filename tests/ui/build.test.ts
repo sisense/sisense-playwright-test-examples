@@ -3,6 +3,7 @@ import { RoleDisplayName as ROLE_NAME } from '@constants/roleDisplayName';
 import { UsersAPISteps } from '@steps/api/admin/users.api.steps';
 import { UserContext } from '@config/UserContext';
 import { BuildType } from '@constants/buildType';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 test.describe('X-RAY-00004: Build a cube example', () => {
     let adminUser: UserContext;
@@ -11,9 +12,9 @@ test.describe('X-RAY-00004: Build a cube example', () => {
     test.beforeEach(async ({ userContext }) => {
         adminUser = await UsersAPISteps.addUser(
             {
-                email: 'admin00004@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.ADMIN,
-                password: 'Mh@960ks',
+                password: generateUserPassword(),
             },
             userContext,
         );

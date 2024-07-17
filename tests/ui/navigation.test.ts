@@ -7,6 +7,7 @@ import { ElementState } from '@constants/elementState';
 import { WidgetType } from '@constants/widgetType';
 import { PermissionType } from '@constants/permissionType';
 import { DashboardPermissionRule } from '@constants/dashboardPermissionRule';
+import { generateUserPassword, generateEmail } from '@utils/stringUtils';
 
 test.describe('X-RAY-00003: Browser navigation test example', () => {
     let designerUser: UserContext;
@@ -17,9 +18,9 @@ test.describe('X-RAY-00003: Browser navigation test example', () => {
     test.beforeEach(async ({ userContext }) => {
         designerUser = await UsersAPISteps.addUser(
             {
-                email: 'designer00003@sisense.com',
+                email: generateEmail(),
                 roleName: ROLE_NAME.DESIGNER,
-                password: 'Bh$963zs',
+                password: generateUserPassword(),
             },
             userContext,
         );

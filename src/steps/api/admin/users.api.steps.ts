@@ -126,7 +126,7 @@ export class UsersAPISteps {
         await test.step(`Verify '${emails.join(', ')}' users are present by '${userContext?.email
             }' via API`, async () => {
                 const allUsers: string[] = await this.getAllUserEmails(userContext);
-                expect(allUsers).toEqual(expect.arrayContaining(emails));
+                expect(allUsers.sort()).toEqual(expect.arrayContaining(emails.sort()));
             });
     }
 
