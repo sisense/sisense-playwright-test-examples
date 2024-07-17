@@ -71,36 +71,3 @@ function downloadFile(
         });
     });
 }
-
-/**
- * Downloads the file from Artifactory
- * @param filename - file name to download
- * @param version - version on artifactory
- * @param targetDir - directory to download
- */
-export const downloadFileFromArtifactory = async function (
-    filename: string,
-    version = envConfig.releaseBranch,
-    targetDir = envConfig.localArtifactsDirectory,
-): Promise<void> {
-    // Set the URL and path to the file in Artifactory
-    const artifactoryUrl = getArtifactoryFilePath(
-        envConfig.getArtifactoryRepository(),
-        version,
-        filename,
-    );
-    const username = envConfig.artifactoryUserName;
-    const password = envConfig.artifactoryPassword;
-    const downloadPath = path.join(targetDir, filename);
-
-    try {
-        await downloadFile(username, password, artifactoryUrl, downloadPath);
-        console.log(`File downloaded: '${downloadPath}' from '${artifactoryUrl}'`);
-
-        // Further processing of the downloaded file can be done here
-    } catch (error) {
-        throw new Error(
-            `Error downloading file: '${downloadPath}' from '${artifactoryUrl}': ${error} `,
-        );
-    }
-};

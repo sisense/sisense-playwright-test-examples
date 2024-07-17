@@ -140,10 +140,6 @@ export class AddDataPopup extends BasePage {
             .click();
     }
 
-    async uploadDataModelSourceFile(fileName: string): Promise<void> {
-        await this.uploadFile(fileName);
-    }
-
     async waitDataModelSourceFileIsUploaded(): Promise<void> {
         await this.loading.waitFor({ timeout: 3 * 1000 });
         await this.loading.waitFor({ state: ElementState.HIDDEN, timeout: 60 * 1000 });

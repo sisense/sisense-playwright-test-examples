@@ -1,17 +1,7 @@
-import { envConfig } from '@config/env.config';
-import path from 'path';
 import fs from 'fs';
 
 export const getFileExtension = (filename: string) => {
     return filename.split('.').pop();
-};
-
-export const getFilePassInArtifactsFolder = (filename: string) => {
-    return path.join(envConfig.localArtifactsDirectory, filename);
-};
-
-export const getFilePassInDownloadsFolder = (filename: string) => {
-    return path.join(envConfig.localDownloadsDirectory, filename);
 };
 
 export const changeFilePermission = (filePath: string, permission: string) => {

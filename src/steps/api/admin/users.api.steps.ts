@@ -11,6 +11,7 @@ import { LanguageCodeName } from '@constants/languageCodeName';
 import { TenantsAPISteps } from '@steps/api/admin/tenants.api.steps';
 import { AuthV09 } from '@controllers/v0_9/auth';
 import { UiSettings } from '@models/UiSettings';
+import { generateUserPassword } from '@utils/stringUtils';
 
 export class UsersAPISteps {
 
@@ -315,7 +316,7 @@ export class UsersAPISteps {
             params = { notify: true };
         } else {
             console.log(`${user.email} user will be created with password`);
-            newUser.password = user.password ?? envConfig.defaultPassword;
+            newUser.password = user.password ?? generateUserPassword();
         }
         const context: UserContext = new UserContext(
             newUser.email,

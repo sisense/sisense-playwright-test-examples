@@ -7,7 +7,6 @@ import { Widget } from '@pages/analytics/widgets/widget';
 import { MenuPopup } from '@pages/analytics/menuPopup';
 import { ConfirmationPopup } from '@pages/analytics/confirmationPopup';
 import { DashboardsAPISteps } from '@steps/api/analytics/dashboards.api.steps';
-import { envConfig } from '@config/env.config';
 
 export class DashboardPageSteps extends BrowserSteps {
     constructor(
@@ -41,7 +40,7 @@ export class DashboardPageSteps extends BrowserSteps {
             }
             const dashboardId: string | undefined = dashboard!.oid;
             await this.openPageByPartURL(
-                `app/main${envConfig.isWindows ? '#' : ''}/dashboards/${dashboardId}`,
+                `app/main/dashboards/${dashboardId}`,
                 userContext,
                 false,
             );

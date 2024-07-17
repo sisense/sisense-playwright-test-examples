@@ -1,5 +1,7 @@
 import { DbType } from '@constants/dbType';
 
+// It's an example of db config. If you plan to create connections please follow this structure.
+
 type DbProperties = {
     user?: string;
     password?: string;

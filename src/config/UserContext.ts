@@ -1,5 +1,6 @@
 import { envConfig } from '@config/env.config';
 import { RoleDisplayName } from '@constants/roleDisplayName';
+import { generateUserPassword } from '@utils/stringUtils';
 
 export class UserContext {
     readonly email: string;
@@ -14,7 +15,7 @@ export class UserContext {
         email: string,
         roleName: RoleDisplayName,
         tenantName: string = envConfig.systemTenant,
-        password: string = envConfig.defaultPassword,
+        password: string = generateUserPassword(),
         userName: string = email,
     ) {
         this.email = email;
@@ -34,8 +35,6 @@ export class UserContext {
 const getBaseUrl = function (userContext: UserContext) {
     if (userContext.tenantName === envConfig.systemTenant) {
         return `${envConfig.getClientUrl()}/`;
-    } else if (envConfig.isStandardCloud && envConfig.tenantBaseHost) {
-        return `https://${userContext.tenantName}.${envConfig.tenantBaseHost}/`;
     } else {
         return `${envConfig.getClientUrl()}/${userContext.tenantName}/`;
     }
@@ -47,9 +46,7 @@ const getBaseUrl = function (userContext: UserContext) {
  */
 export const defaultUserContext = new UserContext(
     envConfig.userEmail,
-    envConfig.getTenantName() === envConfig.systemTenant
-        ? RoleDisplayName.SYS_ADMIN
-        : RoleDisplayName.TENANT_ADMIN,
-    envConfig.getTenantName(),
+    RoleDisplayName.SYS_ADMIN,
+    envConfig.systemTenant,
     envConfig.userPassword,
 );

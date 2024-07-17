@@ -1,15 +1,11 @@
 import test, { APIResponse, expect } from '@playwright/test';
 import { UserContext } from '@config/UserContext';
-import { envConfig } from '@config/env.config';
 import { DashboardSearchFilterType } from '@constants/dashboardSearchFilterType';
 import { DashboardSearchQuickFilter } from '@models/DashboardSearchQuickFilter';
 import { RoleDisplayName as ROLE_NAME } from '@constants/roleDisplayName';
 import { OwnershipType } from '@constants/ownershipType';
 import { DashboardsV1 } from '@controllers/v1_0/dashboards';
 import { DashboardsV09 } from '@controllers/v0_9/dashboards';
-import { downloadFileFromArtifactory } from '@utils/artifactoryUtils';
-import { getJsonFromArtifactsFile } from '@utils/jsonUtils';
-import { DashboardImportAction } from '@constants/dashboardImportAction';
 import { DatasourcesAPISteps } from '@steps/api/data/datasources.api.steps';
 import { Datasource } from '@models/Datasource';
 import {
@@ -43,16 +39,7 @@ export class DashboardsAPISteps {
     ): Promise<Dashboard | undefined> {
         let allDashboards: Dashboard[];
 
-        if (envConfig.isWindows) {
-            allDashboards = await DashboardsAPISteps.searchDashboards(
-                userContext,
-                '',
-                DashboardSearchFilterType.ALL,
-            );
-        } else {
-            allDashboards = await DashboardsAPISteps.getDashboards(userContext);
-        }
-
+        allDashboards = await DashboardsAPISteps.getDashboards(userContext);
         const dashboard: Dashboard | undefined = allDashboards.find(
             (dash) => dash.title === dashboardTitle,
         );
@@ -430,40 +417,6 @@ export class DashboardsAPISteps {
                 console.log(
                     `'${dashboardTitle}' dashboard wasn't deleted because it wasn't found by '${userContext.email}'`,
                 );
-        });
-    }
-
-    /**
-    * Import dashboard under the user
-    * @param dashboardName         - dashboard name to import
-    * @param userContext           - user that makes the API call
-    * @param dashboardImportAction - SKIP or OVERWRITE the dashboard if already exists
-    */
-    static async importDashboard(
-        dashboardName: string,
-        userContext: UserContext,
-        dashboardImportAction?: DashboardImportAction,
-    ): Promise<void> {
-        const title = dashboardImportAction
-            ? `Import '${dashboardName}' dashboard with '${dashboardImportAction.toUpperCase()}' option by '${userContext.email
-            }' via API`
-            : `Import '${dashboardName}' dashboard by '${userContext.email}' via API`;
-        await test.step(title, async () => {
-            // Download dashboard from Artifactory
-            await downloadFileFromArtifactory(dashboardName);
-
-            const dashboard: Dashboard = getJsonFromArtifactsFile(dashboardName);
-
-            const params = dashboardImportAction
-                ? { ['action']: dashboardImportAction }
-                : undefined;
-            const response: APIResponse = await DashboardsV1.postDashboardsImportBulk(
-                [dashboard],
-                userContext,
-                params,
-            );
-            expect(response.status()).toBe(201);
-            console.log(`Dashboard imported: '${dashboardName}'`);
         });
     }
 

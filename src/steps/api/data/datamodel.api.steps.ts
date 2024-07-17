@@ -1,44 +1,9 @@
 import { UserContext } from '@config/UserContext';
 import test, { APIResponse, expect } from '@playwright/test';
-import { downloadFileFromArtifactory } from '@utils/artifactoryUtils';
-import { getJsonFromArtifactsFile } from '@utils/jsonUtils';
 import { Datamodel } from '@models/Datamodel';
-import { DatamodelImportsExportsV2 } from '@controllers/v2_0/datamodelImportsExports';
 import { DatamodelsV2 } from '@controllers/v2_0/datamodels';
 
 export class DatamodelAPISteps {
-
-    /**
-     * Import datamodel schema under the user
-     * @param datamodelSchemaFilename - datamodel schema file name to import (.smodel)
-     * @param userContext             - user that makes the API call
-     * @param newTitle                - (optional) change datamodel title
-     */
-    static async importDatamodelSchema(
-        datamodelSchemaFilename: string,
-        userContext: UserContext,
-        newTitle?: string,
-    ): Promise<void> {
-        await test.step(`Import '${datamodelSchemaFilename}' datamodel schema ${newTitle ? `with new title '${newTitle}' ` : ''
-            }by '${userContext.email}' via API`, async (): Promise<void> => {
-                // Download datamodel schema file from Artifactory
-                await downloadFileFromArtifactory(datamodelSchemaFilename);
-
-                const datamodelSchema: Datamodel = getJsonFromArtifactsFile(datamodelSchemaFilename);
-
-                const response: APIResponse =
-                    await DatamodelImportsExportsV2.postDatamodelImportsSchema(
-                        datamodelSchema,
-                        userContext,
-                        newTitle,
-                    );
-                if (!response.ok()) {
-                    console.log(JSON.stringify(await response.json()));
-                }
-                expect(response.status(), JSON.stringify(await response.json())).toBe(201);
-                console.log(`Datamodel schema imported: '${datamodelSchemaFilename}'`);
-            });
-    }
 
     /**
     * Deletes a datamodel by its name

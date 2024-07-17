@@ -1,11 +1,10 @@
 import { defineConfig, devices, ReporterDescription } from '@playwright/test';
 import type { UserContextFixture } from './src/fixtures/userContext.fixture';
-import { envConfig } from './src/config/env.config';
 
 /* array of all playwright projects. Set name with '-api' substring to avoid using browser in tests */
 const allProjects: any[] = [
   {
-    name: envConfig.allTestProject,
+    name: 'all',
   },
   {
     name: 'api',

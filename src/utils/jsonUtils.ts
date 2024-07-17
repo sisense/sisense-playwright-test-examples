@@ -1,15 +1,4 @@
-import { getFilePassInArtifactsFolder } from '@utils/fileUtils';
 import fs from 'fs';
-
-/**
- * Gets json of a dashboard
- * @param filename - filename in artifacts
- * @returns dashboard in json format
- */
-export const getJsonFromArtifactsFile = function (filename: string) {
-    const dashboardPath = getFilePassInArtifactsFolder(filename);
-    return getJsonFromFile(dashboardPath);
-};
 
 /**
  * Gets json from the file
