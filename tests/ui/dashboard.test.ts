@@ -8,17 +8,18 @@ test.describe('X-RAY-00024: Add dashboards UI actions', () => {
     const dashboardName = 'dashboard-X-RAY-00024';
     const widgetName = 'widget-X-RAY-00024';
 
-    test.afterEach(async ({ userContext }) => {
+    test.afterEach(async ({userContext}) => {
         await DashboardsAPISteps.deleteDashboardsBulkByAdmin([dashboardName], userContext);
     });
+
     test('X-RAY-00024 @examples', async ({
-        userContext,
-        loginPageSteps,
-        analyticsNavverSteps,
-        headerPageSteps,
-        widgetSteps,
-        newWidgetPopupSteps,
-        analyticsDimensionsPopupSteps,
+            userContext,
+            loginPageSteps,
+            analyticsNavverSteps,
+            headerPageSteps,
+            widgetSteps,
+            newWidgetPopupSteps,
+            analyticsDimensionsPopupSteps,
     }) => {
         await loginPageSteps.logIn(userContext);
         await headerPageSteps.openAnalyticsPage();
@@ -34,6 +35,24 @@ test.describe('X-RAY-00024: Add dashboards UI actions', () => {
         await newWidgetPopupSteps.verifyWidgetBodyHasVisibilityState(ElementState.VISIBLE);
         await newWidgetPopupSteps.clickWidgetTypeIcon(WidgetType.COLUMN_CHART);
         await newWidgetPopupSteps.clickCreateButton();
+        await widgetSteps.verifyAllWidgetsLoaded();
+    });
+});
+
+test.describe('X-RAY-17466: Open dashboard UI actions', () => {
+    const dashboardName: string = 'dashboard-X-RAY-17466';
+    test.fail(); //Remove 'test.fail();' after specifying valid dashboard title
+
+    test('X-RAY-17466 @examples', async ({
+            userContext,
+            loginPageSteps,
+            analyticsNavverSteps,
+            headerPageSteps,
+            widgetSteps,
+    }) => {
+        await loginPageSteps.logIn(userContext);
+        await headerPageSteps.openAnalyticsPage();
+        await analyticsNavverSteps.openDashboardByTitle(dashboardName);
         await widgetSteps.verifyAllWidgetsLoaded();
     });
 });

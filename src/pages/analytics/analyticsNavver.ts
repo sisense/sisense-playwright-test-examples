@@ -1,5 +1,6 @@
 import { BasePage } from '@pages/basePage';
 import { Locator, Page } from '@playwright/test';
+import { ElementState } from '@constants/elementState.ts';
 
 export class AnalyticsNavver extends BasePage {
     constructor(
@@ -25,5 +26,14 @@ export class AnalyticsNavver extends BasePage {
         return this.dashboardListItem.filter({
             has: this.navverItemTitle.getByText(title, { exact: true }),
         });
+    }
+
+    async waitDashboardListItemVisibilityState(title: string, state:ElementState):Promise<void> {
+        try {
+            await this.getDashboardListItemByTitle(title).waitFor({state});
+        }
+        catch(e) {
+            throw new Error(`Dashboard with title '${title}' not found.`)
+        }
     }
 }

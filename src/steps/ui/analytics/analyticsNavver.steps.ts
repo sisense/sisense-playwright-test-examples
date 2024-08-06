@@ -2,18 +2,17 @@ import test, { expect, Page } from '@playwright/test';
 import { BrowserSteps } from '@steps/ui/browser.steps';
 import { AnalyticsNavver } from '@pages/analytics/analyticsNavver';
 import { DashboardPage } from '@pages/analytics/dashboard/dashboardPage';
-import { ImportDashboardPopup } from '@pages/analytics/importDashboardPopup';
 import { Widget } from '@pages/analytics/widgets/widget';
 import { MenuPopup } from '@pages/analytics/menuPopup';
 import { NewDashboardPopup } from '@pages/analytics/newDashboardPopup';
 import { ChooseDataSourcePopup } from '@pages/analytics/chooseDataSourcePopup';
+import { ElementState } from '@constants/elementState.ts';
 
 export class AnalyticsNavverSteps extends BrowserSteps {
     constructor(
         page: Page,
         private analyticsNavver = new AnalyticsNavver(page),
         private dashboardPage = new DashboardPage(page),
-        private importDashboardPopup = new ImportDashboardPopup(page),
         private widget = new Widget(page),
         private menuPopup = new MenuPopup(page),
         private newDashboardPopup = new NewDashboardPopup(page),
@@ -29,6 +28,7 @@ export class AnalyticsNavverSteps extends BrowserSteps {
      */
     openDashboardByTitle = async (title: string, waitWidgetsToBeLoaded: boolean = true) => {
         await test.step(`Open '${title}' dashboard in navver`, async () => {
+            await this.analyticsNavver.waitDashboardListItemVisibilityState(title, ElementState.VISIBLE);
             await this.analyticsNavver.clickDashboardByTitle(title);
             await this.dashboardPage.mouseMove(-150, 0);
             await this.dashboardPage.waitDashboardTitleToBe(title);
