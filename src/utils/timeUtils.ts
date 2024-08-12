@@ -16,8 +16,10 @@ export function getCurrentDate(): string {
  * @param seconds   - amount in seconds to sleep
  * @param reason    - add reason for sleep trigger (will be added to console output)
  */
-export async function sleep(seconds: number, reason?: string): Promise<void> {
-    console.log(`Waiting '${seconds}' seconds... ${reason}`);
-    await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-    console.log(`Waiting done.`);
+export async function sleep(seconds?: number, reason?: string): Promise<void> {
+    if (seconds) {
+        console.log(`Waiting '${ seconds }' seconds... ${ reason }`);
+        await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+        console.log(`Waiting done.`);
+    }
 }

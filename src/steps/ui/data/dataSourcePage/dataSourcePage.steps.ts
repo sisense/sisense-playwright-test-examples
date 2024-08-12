@@ -15,9 +15,13 @@ export class DataSourcePageSteps extends BrowserSteps {
      */
     verifyDataSourceTitleEquals = async (dataSourceTitle: string) => {
         await test.step(`Verify DataSource title is '${dataSourceTitle}' on 'Data Source' page`, async () => {
-            await expect(async () => {
-                expect(await this.dataSourcePage.getDataSourceName()).toBe(dataSourceTitle);
-            }).toPass({ timeout: 10 * 1000 });
+            await expect
+                .poll(async () => {
+                        return this.dataSourcePage.getDataSourceName();
+                    }, {
+                        message: `DataSource title is different from '${dataSourceTitle}' on 'Data Source' page`
+                    }
+                ).toEqual(dataSourceTitle);
         });
     };
 

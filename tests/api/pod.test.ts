@@ -26,10 +26,10 @@ test.describe('X-RAY-00006: Restart pods', () => {
 
     test('X-RAY-00006 @examples', async ({ userContext }) => {
         await CliAPISteps.waitAllPodsRunning(userContext);
-        await CliAPISteps.restartSpecificPods([PodName.CONFIGURATION, PodName.API_GATEWAY], admin);
+        await CliAPISteps.restartSpecificPods([PodName.CONFIGURATION, PodName.API_GATEWAY], admin, false);
         await CliAPISteps.waitSpecificPodsRunning(
             [PodName.CONFIGURATION, PodName.API_GATEWAY],
-            admin,
+            admin, 10
         );
         await CliAPISteps.waitAllPodsRunning(admin);
     });

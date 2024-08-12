@@ -55,13 +55,14 @@ export class CliAPISteps {
         intervalSeconds: number = 3,
     ): Promise<void> {
         await test.step(`Wait all pods are started via API by '${userContext.email}'`, async () => {
-            if (delaySeconds) await sleep(delaySeconds, 'before checking all pods status');
+            await sleep(delaySeconds, 'before checking all pods status');
             console.log(`Wait all pods are started during ${timeoutSeconds} seconds...`);
             await this.waitCliReadyToUse(userContext);
             try {
-                await expect(async () => {
-                    expect(await this.areAllExistingPodsInRunningStatus(userContext)).toEqual(true);
-                }).toPass({ timeout: timeoutSeconds * 1000, intervals: [intervalSeconds * 1000] });
+                await expect
+                    .poll(async () => {
+                        return this.areAllExistingPodsInRunningStatus(userContext);
+                    }, { timeout: timeoutSeconds * 1000, intervals: [intervalSeconds * 1000] }).toEqual(true);
                 console.log('All pods started');
             } catch (error) {
                 throw new Error(`Error: some pods still aren't running.`);
@@ -83,16 +84,15 @@ export class CliAPISteps {
         delaySeconds?: number,
     ): Promise<void> {
         await test.step(`Wait for '${podNames.join(', ')}' pod(s) running via API by '${userContext.email
-            }'`, async () => {
-                if (delaySeconds) await sleep(delaySeconds, 'before checking pods status');
-                await this.waitCliReadyToUse(userContext);
-                await expect(async () => {
-                    expect(await this.areSpecificPodsInRunningStatus(podNames, userContext)).toEqual(
-                        true,
-                    );
-                }).toPass({ timeout: 4 * 60 * 1000, intervals: [3 * 1000] });
-                console.log(`'${podNames.join(', ')}' pods are running`);
-            });
+        }'`, async () => {
+            await sleep(delaySeconds, 'before checking pods status');
+            await this.waitCliReadyToUse(userContext);
+            await expect
+                .poll(async () => {
+                    return this.areSpecificPodsInRunningStatus(podNames, userContext)
+                },{ timeout: 4 * 60 * 1000, intervals: [3 * 1000] }).toEqual(true)    ;
+            console.log(`'${podNames.join(', ')}' pods are running`);
+        });
     }
 
     private static async areSpecificPodsInRunningStatus(
@@ -122,11 +122,12 @@ export class CliAPISteps {
      */
     private static async waitCliReadyToUse(userContext: UserContext) {
         await test.step(`Wait for CLI is ready to be used via API by '${userContext.email}'`, async (): Promise<void> => {
-            await expect(async () => {
-                const res: APIResponse = await this.getAllPodsInformation(userContext);
-                console.log(`Cli status code: ${res.status()}`);
-                expect(res.status()).toBe(200);
-            }).toPass({ timeout: 60 * 1000, intervals: [5 * 1000] });
+            await expect
+                .poll(async () => {
+                    const res: APIResponse = await this.getAllPodsInformation(userContext);
+                    console.log(`Cli status code: ${res.status()}`);
+                    return res.status();
+                },{message: `Response status is not 200`, timeout: 60 * 1000, intervals: [5 * 1000] }).toEqual(200);
         });
     }
 
@@ -146,10 +147,10 @@ export class CliAPISteps {
         try {
             await this.waitCliReadyToUse(userContext);
             console.log(`Restarting '${podName}' pod: STARTED`);
-            await expect(async () => {
-                const response: string = await this.getPodRestartResponseBody(podName, userContext);
-                expect(response.includes(SUCCESSFUL_RESPONSE_BODY)).toEqual(true);
-            }).toPass({ timeout: 60 * 1000, intervals: [10 * 1000] });
+            await expect
+                .poll(async () => {
+                    return this.getPodRestartResponseBody(podName, userContext);
+                },{ timeout: 60 * 1000, intervals: [10 * 1000] }).toContain(SUCCESSFUL_RESPONSE_BODY);
             console.log(`Restarting '${podName}' pod: FINISHED`);
         } catch (error) {
             console.log(`Restarting '${podName}' pod: FAILED`);

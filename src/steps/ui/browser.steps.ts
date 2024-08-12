@@ -41,12 +41,14 @@ export class BrowserSteps {
      */
     verifyPageURLContains = async (partURL: string) => {
         await test.step(`Verify page URL contains '${partURL}'`, async () => {
-            await expect(async () => {
-                const currentPageURL = this.basePage.getPageURL();
-                expect(currentPageURL).toContain(partURL);
-            }).toPass({
-                timeout: 5 * 1000,
-            });
+            await expect
+                .poll(async () => {
+                        return this.basePage.getPageURL();
+                    },{
+                        message: `Page URL does not contain '${partURL}'`
+                    }
+                )
+                .toContain(partURL);
         });
     };
 

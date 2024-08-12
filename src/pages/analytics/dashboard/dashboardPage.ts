@@ -6,6 +6,7 @@ import { Constants } from '@constants/constants';
 export class DashboardPage extends BasePage {
     constructor(
         page: Page,
+        // @ts-ignore
         private dashboardToolbar: Locator = page.locator(`div#prism-toolbar`),
         // [aria-label] isn't used in [dashboardTitle] locator because of using this UI element in different branches
         private dashboardTitle: Locator = dashboardToolbar.locator(`div.toolbar-breadcrumbs`),

@@ -4,8 +4,6 @@ import { UserContext } from '@config/UserContext';
 import { Dashboard } from '@models/Dashboard';
 import { DashboardPage } from '@pages/analytics/dashboard/dashboardPage';
 import { Widget } from '@pages/analytics/widgets/widget';
-import { MenuPopup } from '@pages/analytics/menuPopup';
-import { ConfirmationPopup } from '@pages/analytics/confirmationPopup';
 import { DashboardsAPISteps } from '@steps/api/analytics/dashboards.api.steps';
 
 export class DashboardPageSteps extends BrowserSteps {
@@ -13,8 +11,6 @@ export class DashboardPageSteps extends BrowserSteps {
         page: Page,
         private dashboardPage = new DashboardPage(page),
         private widget = new Widget(page),
-        private menuPopup = new MenuPopup(page),
-        private confirmationPopup = new ConfirmationPopup(page),
     ) {
         super(page);
     }
@@ -35,7 +31,7 @@ export class DashboardPageSteps extends BrowserSteps {
             );
             if (!dashboard) {
                 throw new Error(
-                    `Dashboard with ${dashboardTitle} title wasn't found by ${userContext.email}`,
+                    `Dashboard with '${dashboardTitle}' title wasn't found by '${userContext.email}'`,
                 );
             }
             const dashboardId: string | undefined = dashboard!.oid;
@@ -52,12 +48,19 @@ export class DashboardPageSteps extends BrowserSteps {
 
     /**
      * Verifies dashboard title matches the expected one
-     * @param expectedTitle - expected dashboard title
+     * @param expectedDashboardTitle - expected dashboard title
      */
-    verifyDashboardTitleIs = async (expectedTitle: string): Promise<void> => {
-        await test.step(`Verify dashboard title is '${expectedTitle}' on 'Dashboard' page`, async (): Promise<void> => {
-            const dashboardTitle: string = await this.dashboardPage.getDashboardTitle();
-            expect(dashboardTitle).toEqual(expectedTitle);
+    verifyDashboardTitleIs = async (expectedDashboardTitle: string): Promise<void> => {
+        await test.step(`Verify dashboard title is '${expectedDashboardTitle}' on 'Dashboard' page`, async (): Promise<void> => {
+            await expect
+                .poll(
+                    async () => {
+                        return this.dashboardPage.getDashboardTitle();
+                    },
+                    {
+                        message:  `Dashboard title does not match expected`},
+                )
+                .toEqual(expectedDashboardTitle)
         });
     };
 }

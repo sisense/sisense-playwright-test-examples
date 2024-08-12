@@ -14,10 +14,14 @@ export class NewWidgetPopupSteps extends BrowserSteps {
      * @param text - expected title text
      */
     verifyDataSourceTitleTextToBe = async (text: string): Promise<void> => {
-        await test.step(`Verify Data Source name to be '${text}' on 'New Widget' popup`, async () => {
-            await expect(async () => {
-                expect(await this.newWidgetPopup.getDatasourceNameText()).toBe(text);
-            }).toPass();
+        await test.step(`Verify Data Source title to be '${text}' on 'New Widget' popup`, async () => {
+            await expect
+                .poll(async () => {
+                return this.newWidgetPopup.getDatasourceNameText();
+                },{
+                    message: `Data source title is different from expected`
+                    },)
+                .toEqual(text);
         });
     };
 

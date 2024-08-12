@@ -42,23 +42,25 @@ export class AnalyticsNavverSteps extends BrowserSteps {
 
     /**
      * Creates a new dashboard with a title for a specific data source
-     * @param dataModelName     - datasource name the title will be created on
-     * @param title             - title of new dashboard
+     * @param dataSourcelTitle     - datasource title the dashboard will be created on
+     * @param dashboardTitle             - title of new dashboard
      */
-    createNewDashboard = async (title: string, dataModelName: string) => {
-        await test.step(`Create '${title}' dashboard for '${dataModelName}' data model in navver`, async () => {
+    createNewDashboard = async (dashboardTitle: string, dataSourcelTitle: string) => {
+        await test.step(`Create '${dashboardTitle}' dashboard for '${dataSourcelTitle}' data model in navver`, async () => {
             await this.analyticsNavver.clickNavverOptionsButton();
             await this.menuPopup.clickOnItem('New Dashboard');
             await this.newDashboardPopup.clickDataSourceDropdown();
-            await this.chooseDataSourcePopup.clickDataSourceByName(dataModelName);
-            await expect(async () => {
-                expect(await this.newDashboardPopup.getDashboardTitleInputValue()).toBe(
-                    dataModelName,
-                );
-            }).toPass({ timeout: 10 * 1000 });
-            await this.newDashboardPopup.typeIntoDashboardTitleInput(title);
+            await this.chooseDataSourcePopup.clickDataSourceByName(dataSourcelTitle);
+            await expect
+                .poll (async () => {
+                        return this.newDashboardPopup.getDashboardTitleInputValue();
+                        },
+                    {message: `Dashboard title is different from datasource title`},
+                )
+            .toEqual(dataSourcelTitle);
+            await this.newDashboardPopup.typeIntoDashboardTitleInput(dashboardTitle);
             await this.newDashboardPopup.clickCreateButton();
-            await this.dashboardPage.waitDashboardTitleToBe(title);
+            await this.dashboardPage.waitDashboardTitleToBe(dashboardTitle);
         });
     };
 }
