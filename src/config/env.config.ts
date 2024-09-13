@@ -1,6 +1,7 @@
 export const envConfig = {
     userEmail: process.env.USER_EMAIL || '',
     userPassword: process.env.PASSWORD || '',
+    defaultPassword: process.env.DEFAULT_USER_PASSWORD || '',
     host: process.env.HOST || '',
     clientPort: parseInt(process.env.HOST_PORT!) || 30845,
     getClientUrl(): string {

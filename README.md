@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Playwright is a modern automation library for testing web applications. It provides powerful tools to simulate user interactions and verify the functionality of web applications, including Sisense. This documentation will guide you through setting up a test project with Playwright for testing your Sisense dashboards and widgets.
+Playwright is a modern automation library for testing web applications. It provides powerful tools to simulate user interactions and verify the functionality of web applications, including Sisense. k6 is a modern library for performance testing. This project is include both to provide you full testing cicle. This documentation will guide you through setting up a test project with Playwright and k6 for testing your Sisense dashboards and widgets.
 
 ### Prerequisites
 
@@ -11,6 +11,7 @@ Before you begin, ensure you have the following installed:
 - Git
 - Node.js (version 18.16.0 or higher)
 - npm (Node Package Manager)
+- Docker
 - A Sisense environment to test against
 
 ### Setting up a test project with Playwright
@@ -45,6 +46,10 @@ Clone the Playwright test project with tests.
 
 `npx playwright test -g "X-RAY-00001" --project=all`
 
+### Run k6 tests
+
+`npm run k6 /dist/tests-k6/createUsers.test.js`
+
 ### Tests examples description
 
 API test examples can be found in the tests/api folder, which contains:
@@ -61,21 +66,27 @@ UI test examples can be found in the tests/ui folder, which contains:
 - Navigate through application test (navigation.test.ts)
 - Create pulse alert (pulse.test.ts)
 
+Performance test examples can be found in the tests-k6 folder, which contains:
+
+- Users and groups creation test and getting randomly group and user (createUsers.test.ts)
+
 ### Create your own tests
 
 You can choose any way to implement your test: **Layer1 > Layer2 > Layer3** or vice versa. Each test case consists of several actions (UI or API) = STEPS.
 
 UI: **Locator** (\src\pages) → **UIStep** (**UIStepClass** \src\steps\ui) → **Test** (\tests)
 API: **Controller** (\src\api\controllers) → **ApiStep** (\src\steps\api) → **Test** (\tests)
+Performance: **PerformanceStep** (\tests-k6\steps\) → **Test** (\tests-k6)
 
 ![Tests structure](/screenshots/fcee388d-2f30-4f3a-9274-baa154cad6b3.png)
 
-First, search for existing UI/API steps. If the step already exists, you can just add it to your test case. If the step doesn’t exist yet, you can create it using the map above.
+First, search for existing UI/API/Performance steps. If the step already exists, you can just add it to your test case. If the step doesn’t exist yet, you can create it using the map above.
 
 To implement a new step:
 
 - UI: PageObject locator + primitive action (e.g. `click()`, `fill()`, `innerText()`, etc.)
 - API: Controller (`get`, `post`, `patch`, etc.)
+- Performance: (`login`, `createUsers`, `createGroups`, etc.)
 
 **Each new UI Steps Class should be added to the Page fixtures (src\fixtures\pages.fixtures.ts) and fixtures you need should be added to your test.**
 
@@ -84,3 +95,9 @@ To implement a new step:
 - **Use Page Object Model:** Organize your tests using the Page Object Model pattern to improve maintainability and readability.
 - **Handle Dynamic Content:** Use appropriate waiting strategies to handle dynamic content that may take time to load.
 - **Use Environment Variables:** Store sensitive information like usernames and passwords in environment variables instead of hardcoding them in your tests.
+
+### Performance tests
+
+- **How it works:** The command to execute performance tests does the following things:
+
+Transpilates the Typescript files from ./tests-k6 to Javascript test files in the ./dist folder using Babel and Webpack. Runs the provided test with k6 using the Dockerfile and docker-compose, which will mount the ./dist folder to /dist, making the tests in there available for the container. Runs executed with option `--insecure-skip-tls-verify` insecure skip TLS verify. Please make sure docker is running on your system before execute performance tests.
