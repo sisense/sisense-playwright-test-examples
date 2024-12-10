@@ -22,7 +22,7 @@ export class DataSourcePage extends BasePage {
         private buildCubeLogsResultMessage: Locator = buildCubeLogsTooltip.locator(
             `[class*='BuildSummary__title'], [class*='LogItem__errorMessage']`,
         ),
-        private replaceAllBuildTypeButton: Locator = page.locator(`span[class*='replace-all']`),
+        private replaceAllBuildTypeButton: Locator = page.locator(`div.app-icon--buildpanel-replace-all`),
         private changesOnlyBuildTypeButton: Locator = page.locator(`span[class*='changes-only']`),
         private notification: Locator = page.locator(`span[class*='Notification__title']`),
         private optionButton: Locator = page.locator(`button[aria-label='cube-menu-button']`),

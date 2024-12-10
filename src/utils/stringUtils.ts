@@ -8,7 +8,7 @@ export const generateEmail = function (): string {
     return generateString(false) + "@sisense.com";
 };
 
-function generateString(isSymbols: boolean = true, length: number = 11, exclude: string = "\\ ' ? \"") {
+function generateString(isSymbols: boolean = true, length: number = 12, exclude: string = "\\ ' ? \"") {
     return generatePassword.generate({
         length: length,
         exclude: exclude,
